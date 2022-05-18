@@ -80,7 +80,7 @@ const RestaurantDetailsPage = () => {
         description={foods.description}
         price={foods.price}
         
-      // remover={() => onClickRemover(foods.id)}
+        remover={() => onClickRemover(foods.id)}
       >
     
       </RestaurantCard>
