@@ -5,7 +5,7 @@ import RestaurantCard from './RestaurantCard'
 import { useState } from 'react'
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography, Modal } from '@material-ui/core'
 // import {UnprotectedPage} from './UnprotectedPage'
-// import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
@@ -22,18 +22,15 @@ const RestaurantDetailsPage = () => {
   const [pedido, setPedido] = useState([])
   const [open, setOpen] = React.useState(false);
 
-
-
   const classes = useStyles();
   // const navigate = useNavigate()
   // useUnprotectedPage()
 
-  // const params = useParams()
+  const params = useParams()
 
   //pegar endpoint Get Restaurant 
   useEffect(() => {
-    // const token = localStorage.getItem('token')
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpqZXJMOXA3UXJoUEw1VWlSS0F4IiwibmFtZSI6IkF0cm9kZXYiLCJlbWFpbCI6ImFzdHJvZGV2QGZ1dHVyZTQuY29tIiwiY3BmIjoiMTExMTMyMTU0NjU0NjUiLCJoYXNBZGRyZXNzIjp0cnVlLCJhZGRyZXNzIjoiYXNkYXNkLCBhc2Rhc2QsIGFzZGFzZCAtIGFzZGFzZCIsImlhdCI6MTY1Mjg3NzM3Nn0.RfMX0FV19RyGfvcbIuMI_CkIz8kBzMCaNiG6UAEIri0'
+    const token = localStorage.getItem('token')
     axios
       .get(
         `https://us-central1-missao-newton.cloudfunctions.net/fourFoodA/restaurants`,
@@ -54,11 +51,10 @@ const RestaurantDetailsPage = () => {
 
   //pegar endpoint Get Restaurant Detail 
   useEffect(() => {
-    // const token = localStorage.getItem('token')
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpqZXJMOXA3UXJoUEw1VWlSS0F4IiwibmFtZSI6IkF0cm9kZXYiLCJlbWFpbCI6ImFzdHJvZGV2QGZ1dHVyZTQuY29tIiwiY3BmIjoiMTExMTMyMTU0NjU0NjUiLCJoYXNBZGRyZXNzIjp0cnVlLCJhZGRyZXNzIjoiYXNkYXNkLCBhc2Rhc2QsIGFzZGFzZCAtIGFzZGFzZCIsImlhdCI6MTY1Mjg3NzM3Nn0.RfMX0FV19RyGfvcbIuMI_CkIz8kBzMCaNiG6UAEIri0'
+    const token = localStorage.getItem('token')
     axios
       .get(
-        `https://us-central1-missao-newton.cloudfunctions.net/fourFoodA/restaurants/1`,
+        `https://us-central1-missao-newton.cloudfunctions.net/fourFoodA/restaurants/${params.id}`,
         {
           headers: {
             auth: token
@@ -108,21 +104,21 @@ const RestaurantDetailsPage = () => {
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            // image={restaurants[0].logoUrl}
+            // image={restaurants.logoUrl}
             title="Contemplative Reptile"
           />
           <CardContent>
             <Typography gutterBottom variant="body2" component="p">
-              {/* {restaurants[0].name} */}
+              {/* {restaurants.name} */}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants[0].category} */}
+              {/* {restaurants.category} */}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants[0].deliveryTime}min - Frete R${restaurants[0].shipping},00 */}
+              {/* {restaurants.deliveryTime}min - Frete R${restaurants[0].shipping},00 */}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants[0].address} */}
+              {/* {restaurants.address} */}
             </Typography>
           </CardContent>
         </CardActionArea>
