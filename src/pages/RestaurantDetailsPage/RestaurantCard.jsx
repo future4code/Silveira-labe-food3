@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const RestaurantCard = (props) => {
+ 
   const theme = useTheme();
   const classes = useStyles();
 
@@ -45,14 +48,15 @@ const RestaurantCard = (props) => {
             </div>
           </CardContent>
         </div>
-        <div  style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-          <Button variant="outlined" color="primary" size="small" style={{ width: 20}}>
-            +
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Button variant="outlined" color="primary" size="small"  onClick={() => props.modal} style={{ width: 20 }}>
+            Add
           </Button>
-          <Typography variant="subtitle1"> '' </Typography>
-          <Button variant="outlined" color="primary" size="small" style={{ width: 20}}>
+          
+          {/* <Typography variant="subtitle1"> '' </Typography>
+          <Button variant="outlined" color="primary" size="small" onClick={() => props.remover} style={{ width: 20}}>
             -
-          </Button>
+          </Button> */}
         </div>
       </Card>
     </div>
