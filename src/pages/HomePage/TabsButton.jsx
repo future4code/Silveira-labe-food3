@@ -101,6 +101,7 @@ const TabsButton = (props) => {
       <TabPanel value={value} index={6}>
         Item Seven
       </TabPanel> */}
+      
     </div>
   );
 }
