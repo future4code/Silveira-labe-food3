@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom'
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import loading from '../../assets/loading.gif'
 import logo from '../../assets/logo.PNG'
 import EditIcon from '@mui/icons-material/Edit';
+import Loading from '../../components/Loading/Loading'
 
 const ProfilePage = () => {
   const navigate = useNavigate()
@@ -31,6 +31,7 @@ const ProfilePage = () => {
     <ScreenContainer>
       <img src={logo} />
       <InfoContainer>
+
         {profile.user ? (<>
           <Typography gutterBottom variant="h6" component="div">
             Informações do Perfil
@@ -76,7 +77,8 @@ const ProfilePage = () => {
 
         ) :
 
-          <img src={loading} />}
+        <Loading/>}
+
       </InfoContainer>
 
 
