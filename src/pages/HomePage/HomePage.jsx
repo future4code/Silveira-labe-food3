@@ -20,17 +20,55 @@ const HomePage = () => {
   const arrayRestaurants = restaurants.restaurants
 
   const [search, setSearch] = useState("")
+  const [tabs, setTabs] = useState("")
 
   const onChangeSearch = (event) => {
     setSearch(event.target.value)
   }
+  console.log(tabs)
+
+  const onClickTodos = () => {
+    setTabs("")
+  }
+  const onClickArabe = () => {
+    setTabs("Árabe")
+  }
+  const onClickAsiatica = () => {
+    setTabs("Asiática")
+  }
+  const onClickHamburguer = () => {
+    setTabs("Hamburguer")
+  }
+  const onClickItaliana = () => {
+    setTabs("Italiana")
+  }
+  const onClickSorvetes = () => {
+    setTabs("Sorvetes")
+  }
+  const onClickCarnes = () => {
+    setTabs("Carnes")
+  }
+  const onClickBaiana = () => {
+    setTabs("Baiana")
+  }
+  const onClickPetiscos = () => {
+    setTabs("Petiscos")
+  }
+  const onClickMexicana = () => {
+    setTabs("Mexicana")
+  }
+
 
 
   const restaurantsCard = arrayRestaurants && arrayRestaurants
   .filter((res) =>{
     return res.name.toLowerCase().includes(search.toLowerCase()) 
   })
+  .filter((res) => {
+    return res.category.toLowerCase().includes(tabs.toLowerCase())
+  })
   .map((res) =>{
+    console.log(res)
     return (
       <RestaurantsCard
       onClick={()=>goToRestaurantDetails(navigate, res.id)}
@@ -50,6 +88,16 @@ const HomePage = () => {
       value={search}
       />
       <TabsButton
+      onClickTodos={onClickTodos}
+      onClickArabe={onClickArabe}
+      onClickAsiatica={onClickAsiatica}
+      onClickHamburguer={onClickHamburguer}
+      onClickItaliana={onClickItaliana}
+      onClickSorvetes={onClickSorvetes}
+      onClickCarnes={onClickCarnes}
+      onClickBaiana={onClickBaiana}
+      onClickPetiscos={onClickPetiscos}
+      onClickMexicana={onClickMexicana}
       />
       {restaurantsCard ? restaurantsCard : <Loading/>}
       
