@@ -11,8 +11,6 @@ const GlobalState = (props) => {
   const states = { cart, cartOrder };
   const setters = { setCart, setCartOrder };
   const requests = {};
- 
-
   return (
     <GlobalStateContext.Provider value={{ states, setters, requests }}>
       {props.children}

@@ -20,23 +20,6 @@ const CartPage = () => {
     setPagamento(event.target.value);
   }
 
-  /* const removeItemFromCart = (itemToRemove) => {
-    const index = cart.findIndex((i) => i.id === itemToRemove.id);
-
-    const newCart = [...cart];
-
-    if (newCart[index].amount === 1) {
-      // só tem um item desse produto
-      newCart.splice(index, 1);
-    } else {
-      // tem mais de um item desse produto
-      // newCart[index].amount = newCart[index].amount - 1
-      newCart[index].amount -= 1;
-    }
-
-    setCart(newCart);
-  }; */
-
   const confirmarCompra = (event) =>{
     console.log(pagamento);
   }

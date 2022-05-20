@@ -43,7 +43,7 @@ const RestaurantCard = (props) => {
         <CardMedia className={classes.cover}
           component="img"
           height="140"
-          image={photoUrl}
+          /* image={photoUrl} */
           title="Live from space album cover"
         />
         <div className={classes.details}>
