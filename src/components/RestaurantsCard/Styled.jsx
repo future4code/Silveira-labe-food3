@@ -11,3 +11,10 @@ export const CardActionsSpace = styled(CardActions)`
     justify-content: space-between;
 `
 
+export const ButtonVerMais = styled.button`
+    position: absolute;
+    bottom: 3.8rem; 
+    right: 1rem;
+    z-index: 1;
+`
+

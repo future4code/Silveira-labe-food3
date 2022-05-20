@@ -44,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: '95%',
-    backgroundColor: theme.palette.background.paper,
+    margin: '10px',
+    backgroundColor: "white",
   },
 }));
 
@@ -58,7 +59,7 @@ const TabsButton = (props) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="static" color="default" style={{backgroundColor: 'white', boxShadow: 'none'}}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -68,16 +69,16 @@ const TabsButton = (props) => {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
-            <Tab label="Todos" />  
-            <Tab label="Árabe" />
-            <Tab label="Asiática"  />
-            <Tab label="Hambúrguer"  />
-            <Tab label="Italiana"  />
-            <Tab label="Sorvetes"  />
-            <Tab label="Carnes"  />
-            <Tab label="Baiana"  />
-            <Tab label="Petiscos"  />
-            <Tab label="Mexicana"  />
+            <Tab label="Todos" onClick={props.onClickTodos}/>  
+            <Tab label="Árabe" onClick={props.onClickArabe}/>
+            <Tab label="Asiática" onClick={props.onClickAsiatica} />
+            <Tab label="Hambúrguer" onClick={props.onClickHamburguer} />
+            <Tab label="Italiana" onClick={props.onClickItaliana} />
+            <Tab label="Sorvetes" onClick={props.onClickSorvetes} />
+            <Tab label="Carnes" onClick={props.onClickCarnes} />
+            <Tab label="Baiana" onClick={props.onClickBaiana} />
+            <Tab label="Petiscos" onClick={props.onClickPetiscos} />
+            <Tab label="Mexicana" onClick={props.onClickMexicana} />
         </Tabs>
       </AppBar>
       {/* <TabPanel value={value} index={0}>
