@@ -1,135 +1,193 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useContext, useState, useInput } from 'react'
 import { useNavigate } from 'react-router-dom'
 import RestaurantCard from './RestaurantCard'
-import { useState } from 'react'
-import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography, Modal } from '@material-ui/core'
-// import {UnprotectedPage} from './UnprotectedPage'
+import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography, Modal, InputLabel, FormControl, Select, MenuItem, Button } from '@material-ui/core'
 import { useParams } from 'react-router-dom'
+import { BASE_URL } from '../../constants/urls'
+import useRequestData from '../../hooks/useRequestData'
+import GlobalStateContext from '../../context/global/GlobalStateContext'
 
-const useStyles = makeStyles({
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'absolute',
+    width: 250,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
   root: {
-    // maxWidth: 400,
+    maxWidth: 345,
+    margin: 20,
+    justifyContent: 'center',
   },
   media: {
     height: 140,
   },
-});
+  text: {
+    color: "#B8B8B8"
+  },
+}));
 
 const RestaurantDetailsPage = () => {
-  const [restaurants, setRestaurants] = useState([])
-  const [restaurantDetail, setRestaurantDetail] = useState([])
-  const [pedido, setPedido] = useState([])
-  const [open, setOpen] = React.useState(false);
+  const { states, setters } = useContext(GlobalStateContext);
+  const { cart, cartOrder } = states;
+  const { setCart, setCartOrder } = setters;
+  const [open, setOpen] = useState(false);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [quantidade, setQuantidade] = useState("");
+
+  const params = useParams()
+  const handleQuantidade = (event) => {
+    setQuantidade(event.target.value)
+  }
+  const restaurants = useRequestData([], ` ${BASE_URL}/restaurants`)
+  const arrayRestaurants = restaurants.restaurants
+
+  const restaurantDetail = useRequestData([], `${BASE_URL}/restaurants/${params.id}`)
 
   const classes = useStyles();
   // const navigate = useNavigate()
   // useUnprotectedPage()
 
-  const params = useParams()
-
-  //pegar endpoint Get Restaurant 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(
-        `https://us-central1-missao-newton.cloudfunctions.net/fourFoodA/restaurants`,
-        {
-          headers: {
-            auth: token
-          }
-        }
-      )
-      .then((response) => {
-        console.log('Restaurantes', response.data.restaurants)
-        setRestaurants(response.data.restaurants)
-      })
-      .catch((error) => {
-        console.log('Deu Erro!!', error.response)
-      });
-  }, []);
-
-  //pegar endpoint Get Restaurant Detail 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(
-        `https://us-central1-missao-newton.cloudfunctions.net/fourFoodA/restaurants/${params.id}`,
-        {
-          headers: {
-            auth: token
-          }
-        })
-      .then((response) => {
-        console.log('Restaurante', response.data.restaurant.products)
-        setRestaurantDetail(response.data.restaurant.products)
-      })
-      .catch((error) => {
-        console.log('erro!!', error.response.data.message)
-      });
-  }, []);
-
-  //fazer map  para popular com os cards das comidas
-  const cardFood = restaurantDetail && restaurantDetail.map((foods) => {
-
-    return (
-      <RestaurantCard
-        key={foods.id}
-        photoUrl={foods.photoUrl}
-        name={foods.name}
-        description={foods.description}
-        price={foods.price}
-        
-      // remover={() => onClickRemover(foods.id)}
-      >
-    
-      </RestaurantCard>
-    )
-  })
-
-
-
-  // const onClickAdicionar = ((id) => {
-  //   setPedido()
-  //   console.log('adicionou')
-  // })
-
-  // const onClickRemover = ((id) => {
-  //   console.log('removeu')
-  // })
-
-  return (
-    <div>
-      <Card className={classes.root}>
+  //fazer map para pegar o restaurante e trazer o nome, imagem, endereco etc
+  const cardRestaurant = arrayRestaurants && arrayRestaurants.map((restaurants) => {
+    if (params.id === restaurants.id) {
+      return <Card key={restaurants.id} className={classes.root}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            // image={restaurants.logoUrl}
+            image={restaurants.logoUrl}
             title="Contemplative Reptile"
           />
           <CardContent>
-            <Typography gutterBottom variant="body2" component="p">
-              {/* {restaurants.name} */}
+            <Typography gutterBottom variant="subtitle1" component="p" style={{ color: "#E8222E" }}>
+              {restaurants.name}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants.category} */}
+            <Typography className={classes.text} variant="subtitle1" component="p" >
+              {restaurants.category}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants.deliveryTime}min - Frete R${restaurants[0].shipping},00 */}
+            <Typography className={classes.text} variant="subtitle1" component="p" >
+              {restaurants.deliveryTime}min - Frete R${restaurants.shipping},00
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {/* {restaurants.address} */}
+            <Typography className={classes.text} variant="subtitle1" component="p" >
+              {restaurants.address}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
-      <div>
+    }
+  });
 
-      </div>
+  const addItemToCart = (product) => {
+    const newItem = {
+      id: product.id,
+      quantity: quantidade
+    }
+    const index = cartOrder.products.findIndex((i) => i.id === product.id);
 
+    const newCartOrder = cartOrder
+
+    if (index === -1) {
+      newCartOrder.products.push(newItem)
+    } else {
+      newCartOrder.products[index].quantity = newCartOrder.products[index].quantity + newItem.quantity;
+    }
+    console.log('carrinho', cartOrder)
+
+    // clearInput()
+    setCartOrder(newCartOrder)
+
+    handleClose()
+  };
+
+  const removeToCart = (id) => {
+    const filterNewCartOrder = cartOrder.products && cartOrder.products.filter((product) => {
+      return id !== product.id
+    })
+    setCartOrder({ ...cartOrder, products: filterNewCartOrder })
+  }
+
+  const showPopUpFunction = () => open ? setOpen(false) : setOpen(true)
+
+  const handleOpen = (newItem) => {
+    showPopUpFunction(newItem)
+  };
+
+  const handleClose = (newItem) => {
+    showPopUpFunction(newItem)
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <h4 id="simple-modal-description">
+        Selecione a quantidade desejada
+      </h4>
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel id="demo-simple-select-outlined-label">Quantidade</InputLabel>
+        <Select id="outlined-basic" label="Quantidade" variant="outlined" size="small" value={quantidade} onChange={handleQuantidade}>
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={1}>1</MenuItem>
+          <MenuItem value={2}>2</MenuItem>
+          <MenuItem value={3}>3</MenuItem>
+          <MenuItem value={4}>4</MenuItem>
+          <MenuItem value={5}>5</MenuItem>
+        </Select>
+      </FormControl>
+      <Button variant="outlined" color="primary" onClick={() => addItemToCart(cart)} size="small">Adicionar ao carrinho</Button>
+    </div >
+  );
+
+  //fazer map  para popular com os cards das comidas
+  const cardFood = restaurantDetail && restaurantDetail.restaurant && restaurantDetail.restaurant.products.map((foods) => {
+    
+    return (
+      <RestaurantCard
+        key={foods.id}
+        product={foods}
+        abreModal={handleOpen}
+        setCart={setCart}
+        removeToCart={removeToCart}
+        quantidade={cartOrder.products.filter((id) => {
+          return id.id.includes(foods.id)
+        })}
+        
+      />
+    )
+  })
+  
+  return (
+    <div>
+      {cardRestaurant}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
 
       {cardFood}
-
     </div>
   )
 }
