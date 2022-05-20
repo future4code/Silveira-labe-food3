@@ -109,7 +109,6 @@ const RestaurantDetailsPage = () => {
     } else {
       newCartOrder.products[index].quantity = newCartOrder.products[index].quantity + newItem.quantity;
     }
-    console.log('carrinho', cartOrder)
 
     // clearInput()
     setCartOrder(newCartOrder)
@@ -142,9 +141,7 @@ const RestaurantDetailsPage = () => {
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">Quantidade</InputLabel>
         <Select id="outlined-basic" label="Quantidade" variant="outlined" size="small" value={quantidade} onChange={handleQuantidade}>
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
+          <MenuItem value="">0</MenuItem>
           <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
           <MenuItem value={3}>3</MenuItem>
@@ -173,7 +170,7 @@ const RestaurantDetailsPage = () => {
         removeToCart={removeToCart}
         quantidade={cartOrder.products.filter((id) => {
           return id.id.includes(foods.id)
-        })}
+        }).map((qtde)=> qtde.quantity)}
         
       />
     )

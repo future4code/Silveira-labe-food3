@@ -32,18 +32,17 @@ const RestaurantCard = (props) => {
   const theme = useTheme();
   const classes = useStyles();
 
-  const { photoUrl, name, description, price, amount ,id} = props.product
+  const { photoUrl, name, description, price, id} = props.product
   const { states, setters } = useContext(GlobalStateContext);
   const { cart, cartOrder } = states;
   const productsExist = cartOrder.products.some((product)=>id === product.id) 
-  console.log(props.quantidade)
   return (
     <div>
       <Card className={classes.root}>
         <CardMedia className={classes.cover}
           component="img"
           height="140"
-          /* image={photoUrl} */
+          image={photoUrl}
           title="Live from space album cover"
         />
         <div className={classes.details}>
@@ -60,7 +59,7 @@ const RestaurantCard = (props) => {
           </CardContent>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <Typography variant="outlined">qnt: </Typography>
+          <Typography>qnt: {props.quantidade}</Typography>
           {productsExist ?  <Button variant="outlined" color="primary" size="small" 
           onClick={() => props.removeToCart(id)} style={{ width: 20 }}>
             remover

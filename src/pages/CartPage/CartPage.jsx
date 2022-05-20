@@ -45,25 +45,6 @@ const CartPage = () => {
         </ContainerEnderecoRestaurante> 
         <ContainerItensPedido>
           
-          <RestaurantCard
-            key={123}
-            id={123}
-            name={'Batata Frita'}
-            description={'Deliciosas french fries'}
-            price={5.88}
-          >
-  
-          </RestaurantCard>
-          
-          <RestaurantCard
-            key={321}
-            id={123}
-            name={'Batata Frita'}
-            description={'Deliciosas french fries'}
-            price={5.88}
-          >
-  
-          </RestaurantCard>
           
         </ContainerItensPedido>    
       </ContainerPedido> :
