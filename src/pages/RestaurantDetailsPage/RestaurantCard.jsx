@@ -61,7 +61,7 @@ const RestaurantCard = (props) => {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <Typography variant="outlined">qnt: </Typography>
-         {productsExist ?  <Button variant="outlined" color="primary" size="small" 
+          {productsExist ?  <Button variant="outlined" color="primary" size="small" 
           onClick={() => props.removeToCart(id)} style={{ width: 20 }}>
             remover
           </Button> :
@@ -74,5 +74,4 @@ const RestaurantCard = (props) => {
     </div>
   )
 }
-
 export default RestaurantCard

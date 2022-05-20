@@ -1,4 +1,5 @@
-import React, { useContext, useState, useInput } from 'react'
+import axios from 'axios'
+import React, { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import RestaurantCard from './RestaurantCard'
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography, Modal, InputLabel, FormControl, Select, MenuItem, Button } from '@material-ui/core'
@@ -6,15 +7,12 @@ import { useParams } from 'react-router-dom'
 import { BASE_URL } from '../../constants/urls'
 import useRequestData from '../../hooks/useRequestData'
 import GlobalStateContext from '../../context/global/GlobalStateContext'
+import { findByLabelText } from '@testing-library/react'
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
+  const top = 50;
+  const left = 50;
   return {
     top: `${top}%`,
     left: `${left}%`,
@@ -26,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     position: 'absolute',
-    width: 250,
+    width: '250px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -151,6 +150,11 @@ const RestaurantDetailsPage = () => {
           <MenuItem value={3}>3</MenuItem>
           <MenuItem value={4}>4</MenuItem>
           <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
+          <MenuItem value={7}>7</MenuItem>
+          <MenuItem value={8}>8</MenuItem>
+          <MenuItem value={9}>9</MenuItem>
+          <MenuItem value={10}>10</MenuItem>
         </Select>
       </FormControl>
       <Button variant="outlined" color="primary" onClick={() => addItemToCart(cart)} size="small">Adicionar ao carrinho</Button>
@@ -191,5 +195,4 @@ const RestaurantDetailsPage = () => {
     </div>
   )
 }
-
 export default RestaurantDetailsPage
