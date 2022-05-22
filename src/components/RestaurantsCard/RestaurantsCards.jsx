@@ -56,7 +56,6 @@ const RestaurantsCard = (props) => {
             Frete: R${props.shipping},00
         </Typography>
       </CardActionsSpace>
-      <ButtonVerMais>Ver mais</ButtonVerMais>
     </CardMargin>
 
   );
