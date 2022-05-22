@@ -2,13 +2,17 @@ import styled from "styled-components";
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 
-
+export const PageContainer = styled.div`
+  margin-bottom: 60px;
+`;
 
 export const ScreenContainer = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
+margin-top: 10px;
+padding-bottom: 5px;
 `
 
 export const LogoImg = styled.img`

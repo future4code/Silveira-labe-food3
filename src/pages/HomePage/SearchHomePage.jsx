@@ -23,7 +23,7 @@ const SearchHomePage = (props) => {
       value={props.form}
       type={"text"}
       id={"outlined-basic"} 
-      label={"Restaurant"} 
+      label={"Restaurante"} 
       variant={"outlined"}
       />
     </form>

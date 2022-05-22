@@ -9,13 +9,15 @@ import CartPage from "../pages/CartPage/CartPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import ProfileEditUserPage from "../pages/ProfilePage/ProfileEditUserPage";
 import ProfileEditAdressPage from "../pages/ProfilePage/ProfileEditAdressPage";
+import InitialPage from '../pages/InitialPage/InitialPage';
 
 
 const Router = () => {
   return (
       <BrowserRouter>
         <Routes>
-          <Route index element={ <LoginPage />} />
+          <Route index element={ <InitialPage />} />
+          <Route path="login" element={ <LoginPage />} />
           <Route path="signup/user" element={ <SignupUserPage />} />
           <Route path="signup/adress" element={ <SignupAdressPage />} />
           <Route path="feed" element={ <HomePage />} />

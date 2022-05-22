@@ -1,9 +1,9 @@
 import React from 'react'
 import useRequestData from '../../hooks/useRequestData'
-import { BorderBottom, CardDiv, InfoAndButtonDiv, InfoContainer, ScreenContainer, StyledTítulo } from './Styled'
+import { BorderBottom, CardDiv, InfoAndButtonDiv, InfoContainer, PageContainer, ScreenContainer, StyledTítulo } from './Styled'
 import { BASE_URL } from '../../constants/urls'
 import OrdersCard from '../../components/OrdersCard/OrdersCard'
-import { goToProfileEditAdress, goToProfileEditUser } from '../../routes/coordinator'
+import { goToFeed, goToProfileEditAdress, goToProfileEditUser } from '../../routes/coordinator'
 import { useNavigate } from 'react-router-dom'
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,8 @@ import { CardActionArea } from '@mui/material';
 import logo from '../../assets/logo.PNG'
 import EditIcon from '@mui/icons-material/Edit';
 import Loading from '../../components/Loading/Loading'
+import Footer from '../../components/Footer/Footer'
+import Header from '../../components/Header/Header'
 
 const ProfilePage = () => {
   const navigate = useNavigate()
@@ -28,14 +30,12 @@ const ProfilePage = () => {
   })
 
   return (
-    <ScreenContainer>
-      <img src={logo} />
+    <PageContainer>
+      <Header hasBtn={false} hasTitle={true} texto="Meu Perfil" onclick={() => goToFeed(navigate)} />
+      <ScreenContainer>
       <InfoContainer>
 
         {profile.user ? (<>
-          <Typography gutterBottom variant="h6" component="div">
-            Informações do Perfil
-          </Typography>
           <CardDiv sx={{ maxWidth: 345 }}>
             <CardActionArea>
               <InfoAndButtonDiv>
@@ -93,6 +93,8 @@ const ProfilePage = () => {
         {/* <OrdersCard /> */}
       </InfoContainer>
     </ScreenContainer>
+      <Footer page='avatar' />
+    </PageContainer>
   )
 }
 

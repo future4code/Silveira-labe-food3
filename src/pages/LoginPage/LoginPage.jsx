@@ -5,6 +5,8 @@ import { goToSignUpUser } from "../../routes/coordinator";
 import LoginForm from "./LoginForm";
 import Button from "@material-ui/core/Button";
 import { LoginContainer, Logo, Title } from "./Styled";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 
 
 
@@ -30,11 +32,10 @@ const LoginPage = () => {
         >
           Não possui cadastro? Clique aqui.
         </Button>
-       
+
       </div>
       
     </LoginContainer>
-    
     </div>
   );
 };

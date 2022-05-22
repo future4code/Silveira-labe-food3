@@ -1,4 +1,5 @@
-import React, { useContext, useState, useInput } from 'react'
+import axios from 'axios'
+import React, { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import RestaurantCard from './RestaurantCard'
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography, Modal, InputLabel, FormControl, Select, MenuItem, Button } from '@material-ui/core'
@@ -6,15 +7,17 @@ import { useParams } from 'react-router-dom'
 import { BASE_URL } from '../../constants/urls'
 import useRequestData from '../../hooks/useRequestData'
 import GlobalStateContext from '../../context/global/GlobalStateContext'
+import { findByLabelText } from '@testing-library/react'
+import Footer from '../../components/Footer/Footer'
+import { Container } from './styled'
+import Header from '../../components/Header/Header'
+import { goToFeed } from '../../routes/coordinator'
+import Loading from '../../components/Loading/Loading'
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
+  const top = 50;
+  const left = 50;
   return {
     top: `${top}%`,
     left: `${left}%`,
@@ -26,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     position: 'absolute',
-    width: 250,
+    width: '250px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -47,14 +51,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RestaurantDetailsPage = () => {
+  const navigate = useNavigate();
   const { states, setters } = useContext(GlobalStateContext);
-  const { cart, cartOrder } = states;
-  const { setCart, setCartOrder } = setters;
+  const { cart, cartOrder, cartWithOrders, cartTotalValue, restaurantId } = states;
+  const { setCart, setCartOrder, setCartTotalValue, setRestaurantId } = setters;
   const [open, setOpen] = useState(false);
   const [modalStyle] = React.useState(getModalStyle);
   const [quantidade, setQuantidade] = useState("");
 
   const params = useParams()
+
   const handleQuantidade = (event) => {
     setQuantidade(event.target.value)
   }
@@ -62,7 +68,7 @@ const RestaurantDetailsPage = () => {
   const arrayRestaurants = restaurants.restaurants
 
   const restaurantDetail = useRequestData([], `${BASE_URL}/restaurants/${params.id}`)
-
+  
   const classes = useStyles();
   // const navigate = useNavigate()
   // useUnprotectedPage()
@@ -97,12 +103,14 @@ const RestaurantDetailsPage = () => {
   });
 
   const addItemToCart = (product) => {
+
+    setRestaurantId(params.id);
+    cartWithOrders.push(cart);
     const newItem = {
       id: product.id,
       quantity: quantidade
     }
     const index = cartOrder.products.findIndex((i) => i.id === product.id);
-
     const newCartOrder = cartOrder
 
     if (index === -1) {
@@ -110,7 +118,8 @@ const RestaurantDetailsPage = () => {
     } else {
       newCartOrder.products[index].quantity = newCartOrder.products[index].quantity + newItem.quantity;
     }
-    console.log('carrinho', cartOrder)
+
+    cartTotalValue.push(product.price * newItem.quantity)
 
     // clearInput()
     setCartOrder(newCartOrder)
@@ -119,6 +128,7 @@ const RestaurantDetailsPage = () => {
   };
 
   const removeToCart = (id) => {
+    cartWithOrders.pop(cart);
     const filterNewCartOrder = cartOrder.products && cartOrder.products.filter((product) => {
       return id !== product.id
     })
@@ -143,14 +153,17 @@ const RestaurantDetailsPage = () => {
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel id="demo-simple-select-outlined-label">Quantidade</InputLabel>
         <Select id="outlined-basic" label="Quantidade" variant="outlined" size="small" value={quantidade} onChange={handleQuantidade}>
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
+          <MenuItem value="">0</MenuItem>
           <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
           <MenuItem value={3}>3</MenuItem>
           <MenuItem value={4}>4</MenuItem>
           <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={6}>6</MenuItem>
+          <MenuItem value={7}>7</MenuItem>
+          <MenuItem value={8}>8</MenuItem>
+          <MenuItem value={9}>9</MenuItem>
+          <MenuItem value={10}>10</MenuItem>
         </Select>
       </FormControl>
       <Button variant="outlined" color="primary" onClick={() => addItemToCart(cart)} size="small">Adicionar ao carrinho</Button>
@@ -159,7 +172,6 @@ const RestaurantDetailsPage = () => {
 
   //fazer map  para popular com os cards das comidas
   const cardFood = restaurantDetail && restaurantDetail.restaurant && restaurantDetail.restaurant.products.map((foods) => {
-    
     return (
       <RestaurantCard
         key={foods.id}
@@ -169,14 +181,15 @@ const RestaurantDetailsPage = () => {
         removeToCart={removeToCart}
         quantidade={cartOrder.products.filter((id) => {
           return id.id.includes(foods.id)
-        })}
+        }).map((qtde)=> qtde.quantity)}
         
       />
     )
   })
   
   return (
-    <div>
+    <>
+      <Header hasBtn={true} hasTitle={true} texto="Restaurante" onclick={() => goToFeed(navigate)} />
       {cardRestaurant}
       <Modal
         open={open}
@@ -186,10 +199,9 @@ const RestaurantDetailsPage = () => {
       >
         {body}
       </Modal>
-
-      {cardFood}
-    </div>
+      
+      {cardFood ? cardFood : <Loading/>}
+    </>
   )
 }
-
 export default RestaurantDetailsPage
