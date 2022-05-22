@@ -1,7 +1,8 @@
 import { Card, CardContent, CardMedia, Typography, useTheme, makeStyles, Button, TextField } from '@material-ui/core';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { colors } from '@material-ui/core';
 import GlobalStateContext from '../../context/global/GlobalStateContext';
+import { ContainerQuantidade } from './styled';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,36 +33,36 @@ const RestaurantCard = (props) => {
   const theme = useTheme();
   const classes = useStyles();
 
-  const { photoUrl, name, description, price, id} = props.product
   const { states, setters } = useContext(GlobalStateContext);
   const { cart, cartOrder } = states;
-  const productsExist = cartOrder.products.some((product)=>id === product.id) 
+  const productsExist = cartOrder.products.some((product)=>props.product.id === product.id) 
+  
   return (
     <div>
       <Card className={classes.root}>
         <CardMedia className={classes.cover}
           component="img"
           height="140"
-          image={photoUrl}
+          image={props.product.photoUrl}
           title="Live from space album cover"
         />
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography component="p" style={{color: "#E8222E"}}>
-              {name}
+              {props.product.name}
             </Typography>
             <Typography variant="subtitle1" style={{color: "#B8B8B8", fontSize: 12}}>
-              {description}
+              {props.product.description}
             </Typography>
             <Typography variant="subtitle1" style={{fontWeight: 'bold', color: "black", lineHeight: '3rem'}}>
-              R${price}
+              R${props.product.price.toFixed(2).replace('.',',')}
             </Typography>
           </CardContent>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <Typography>qnt: {props.quantidade}</Typography>
+          <ContainerQuantidade> {props.quantidade}</ContainerQuantidade>
           {productsExist ?  <Button variant="outlined" color="primary" size="small" 
-          onClick={() => props.removeToCart(id)} style={{ width: 20 }}>
+          onClick={() => props.removeToCart(props.product.id)} style={{ width: 20 }}>
             remover
           </Button> :
           <Button variant="outlined" color="primary" size="small" 

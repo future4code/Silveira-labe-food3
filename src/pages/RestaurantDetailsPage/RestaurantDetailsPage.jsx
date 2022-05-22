@@ -8,6 +8,11 @@ import { BASE_URL } from '../../constants/urls'
 import useRequestData from '../../hooks/useRequestData'
 import GlobalStateContext from '../../context/global/GlobalStateContext'
 import { findByLabelText } from '@testing-library/react'
+import Footer from '../../components/Footer/Footer'
+import { Container } from './styled'
+import Header from '../../components/Header/Header'
+import { goToFeed } from '../../routes/coordinator'
+import Loading from '../../components/Loading/Loading'
 
 
 function getModalStyle() {
@@ -46,14 +51,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RestaurantDetailsPage = () => {
+  const navigate = useNavigate();
   const { states, setters } = useContext(GlobalStateContext);
-  const { cart, cartOrder } = states;
-  const { setCart, setCartOrder } = setters;
+  const { cart, cartOrder, cartWithOrders, cartTotalValue, restaurantId } = states;
+  const { setCart, setCartOrder, setCartTotalValue, setRestaurantId } = setters;
   const [open, setOpen] = useState(false);
   const [modalStyle] = React.useState(getModalStyle);
   const [quantidade, setQuantidade] = useState("");
 
   const params = useParams()
+
   const handleQuantidade = (event) => {
     setQuantidade(event.target.value)
   }
@@ -61,7 +68,7 @@ const RestaurantDetailsPage = () => {
   const arrayRestaurants = restaurants.restaurants
 
   const restaurantDetail = useRequestData([], `${BASE_URL}/restaurants/${params.id}`)
-
+  
   const classes = useStyles();
   // const navigate = useNavigate()
   // useUnprotectedPage()
@@ -96,12 +103,14 @@ const RestaurantDetailsPage = () => {
   });
 
   const addItemToCart = (product) => {
+
+    setRestaurantId(params.id);
+    cartWithOrders.push(cart);
     const newItem = {
       id: product.id,
       quantity: quantidade
     }
     const index = cartOrder.products.findIndex((i) => i.id === product.id);
-
     const newCartOrder = cartOrder
 
     if (index === -1) {
@@ -110,6 +119,8 @@ const RestaurantDetailsPage = () => {
       newCartOrder.products[index].quantity = newCartOrder.products[index].quantity + newItem.quantity;
     }
 
+    cartTotalValue.push(product.price * newItem.quantity)
+
     // clearInput()
     setCartOrder(newCartOrder)
 
@@ -117,6 +128,7 @@ const RestaurantDetailsPage = () => {
   };
 
   const removeToCart = (id) => {
+    cartWithOrders.pop(cart);
     const filterNewCartOrder = cartOrder.products && cartOrder.products.filter((product) => {
       return id !== product.id
     })
@@ -160,7 +172,6 @@ const RestaurantDetailsPage = () => {
 
   //fazer map  para popular com os cards das comidas
   const cardFood = restaurantDetail && restaurantDetail.restaurant && restaurantDetail.restaurant.products.map((foods) => {
-    
     return (
       <RestaurantCard
         key={foods.id}
@@ -177,7 +188,8 @@ const RestaurantDetailsPage = () => {
   })
   
   return (
-    <div>
+    <>
+      <Header hasBtn={true} hasTitle={true} texto="Restaurante" onclick={() => goToFeed(navigate)} />
       {cardRestaurant}
       <Modal
         open={open}
@@ -187,9 +199,9 @@ const RestaurantDetailsPage = () => {
       >
         {body}
       </Modal>
-
-      {cardFood}
-    </div>
+      
+      {cardFood ? cardFood : <Loading/>}
+    </>
   )
 }
 export default RestaurantDetailsPage

@@ -8,9 +8,12 @@ export const FooterContainer = styled.div`
    bottom: 0;
    left: 0; 
    width: 100%;
+   height: 40px;
    display: flex;
    justify-content: center;
-   align-items: center;  
+   align-items: center; 
+   background-color: white;
+   z-index: 9999;
 `
 
 export const Home = styled.img`

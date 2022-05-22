@@ -15,18 +15,23 @@ export const Label = styled.p`
   color: #929292;
   font-weight: 300;
   font-size: 18px;
-  margin: 0 20px;
+  margin: 0 20px 10px 20px;
 `;
 
 export const Endereco = styled.p`
   font-weight: 600;
   font-size: 18px;
   margin: 0 20px;
+  line-height: 25px;
+`;
+
+export const PageContainer = styled.div`
+  margin-bottom: 180px;
 `;
 
 export const ContainerPedido = styled.div`
-  min-height: calc(50vh - 30px);/* descontar o valor dos paddings, pois não está zerado no estado global */
-  max-height: calc(50vh - 30px);
+  min-height: calc(41vh - 30px);/* descontar o valor dos paddings, pois não está zerado no estado global */
+  max-height: calc(41vh - 30px);
   padding: 15px;
   overflow-y: auto;
 `;

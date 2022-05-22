@@ -1,5 +1,9 @@
-export const goToLogin = (navigate) => {
+export const goToInitial = (navigate) => {
     navigate("/");
+}
+
+export const goToLogin = (navigate) => {
+    navigate("/login");
 }
 
 export const goBack = (navigate) => {

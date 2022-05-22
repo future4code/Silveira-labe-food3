@@ -5,11 +5,13 @@ import {BASE_URL} from '../../constants/urls'
 import RestaurantsCard from '../../components/RestaurantsCard/RestaurantsCards'
 import { RestListContainer } from './Styled'
 import SearchHomePage from './SearchHomePage'
-import { goToRestaurantDetails } from '../../routes/coordinator'
+import { goToFeed, goToRestaurantDetails } from '../../routes/coordinator'
 import { useNavigate } from 'react-router-dom'
 import Loading from '../../components/Loading/Loading'
 import TabsButton from './TabsButton'
 import { goToLogin } from '../../routes/coordinator'
+import Footer from '../../components/Footer/Footer'
+import Header from '../../components/Header/Header'
 
 
 const HomePage = () => {
@@ -82,7 +84,9 @@ const HomePage = () => {
   })
  
   return (
-    <RestListContainer>
+    <>
+      <Header hasBtn={false} hasTitle={true} texto="Ifuture" onclick={() => goToFeed(navigate)} />
+      <RestListContainer>
       <SearchHomePage
       onChange={onChangeSearch}
       value={search}
@@ -102,6 +106,8 @@ const HomePage = () => {
       {restaurantsCard ? restaurantsCard : <Loading/>}
       
     </RestListContainer>
+      <Footer page='home' />
+    </>
   )
 }
 
